@@ -1,0 +1,1379 @@
+<!doctype html>
+<html lang="de" dir="ltr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<title>🎉 Alles Gute zum Geburtstag 🎂</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<meta name="theme-color" content="#2F7BFF">
+
+<style>
+  :root{
+    /* Neon colors */
+    --neon-blue:#2F7BFF;
+    --neon-pink:#FF2FB2;
+
+    /* Theme */
+    --rose: var(--neon-blue);     /* primary */
+    --rose-2: var(--neon-pink);   /* secondary */
+
+    --ink:#EAF0FF;                /* main text on dark */
+    --muted: rgba(234,240,255,.78);
+
+    --paper: rgba(12,14,24,.72);  /* card glass */
+    --paper-2: rgba(0,0,0,.24);
+
+    --shadow:0 18px 60px rgba(0,0,0,.55);
+
+    /* dots */
+    --dot: rgba(234,240,255,.18);
+    --dot-active: var(--rose-2);
+
+    /* decorative gradient (neon frame) */
+    --gold1: rgba(47,123,255,.95);
+    --gold2: rgba(255,47,178,.90);
+    --gold3: rgba(255,255,255,.85);
+
+    --halo1w: clamp(700px, 90vw, 1400px);
+    --halo1h: clamp(420px, 62vh, 980px);
+    --halo2w: clamp(560px, 72vw, 1200px);
+    --halo2h: clamp(360px, 54vh, 860px);
+
+    --floor-gap: clamp(72px, 10vh, 180px);
+
+    /* print scale (set by JS) */
+    --print-zoom: 1;
+
+    --scroll-pad: clamp(72px, 14vh, 220px);
+  }
+
+  html, body { height: 100%; margin: 0; overflow-x: hidden; }
+
+  body{
+    font-family: system-ui,-apple-system,Segoe UI,Roboto,Inter,Tahoma,sans-serif;
+    color:var(--ink);
+
+    padding-top:    max(28px, env(safe-area-inset-top));
+    padding-right:  28px;
+    padding-bottom: calc(max(28px, env(safe-area-inset-bottom)) + var(--floor-gap));
+    padding-left:   28px;
+
+    background:
+      radial-gradient(var(--halo1w) var(--halo1h) at 78% 10%, rgba(47,123,255,.24), transparent 60%),
+      radial-gradient(var(--halo2w) var(--halo2h) at 10% 92%, rgba(255,47,178,.18), transparent 62%),
+      radial-gradient(clamp(520px, 70vw, 1100px) clamp(320px, 46vh, 760px) at 50% -10%, rgba(47,123,255,.14), transparent 64%),
+      radial-gradient(clamp(520px, 70vw, 1100px) clamp(320px, 46vh, 760px) at 110% 120%, rgba(255,47,178,.10), transparent 64%),
+      linear-gradient(135deg, #060913, #0B1230);
+    background-attachment: fixed, fixed, fixed, fixed, fixed;
+    position:relative;
+  }
+
+  /* subtle sparkle overlay */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background:
+      radial-gradient(2px 2px at 12% 22%, rgba(255,255,255,.55), transparent 60%),
+      radial-gradient(2px 2px at 24% 72%, rgba(255,255,255,.35), transparent 60%),
+      radial-gradient(2px 2px at 50% 38%, rgba(255,255,255,.35), transparent 60%),
+      radial-gradient(2px 2px at 72% 64%, rgba(255,255,255,.45), transparent 60%),
+      radial-gradient(2px 2px at 86% 28%, rgba(255,255,255,.35), transparent 60%),
+      radial-gradient(2px 2px at 92% 78%, rgba(255,255,255,.40), transparent 60%);
+    opacity:.28;
+    animation: twinkle 6.5s ease-in-out infinite;
+    filter: blur(.2px);
+  }
+  @keyframes twinkle{
+    0%,100%{ opacity:.18; transform: translateY(0); }
+    50%{ opacity:.34; transform: translateY(-4px); }
+  }
+
+  .stage{
+    position:relative;
+    width: min(760px, 100%);
+    margin-inline: auto;
+    min-height: 100svh;
+    overflow-x: hidden;
+  }
+
+  /* Confetti canvas */
+  #confetti{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index: 80;
+  }
+
+  /* Umschlag */
+  .envelope{ position:relative; height:360px; perspective:1200px; display:flex;align-items:center;justify-content:center; }
+  .env-body{
+    position:absolute; inset:0; border-radius:22px; overflow:hidden;
+    background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+    border:1px solid rgba(255,255,255,.14);
+    box-shadow:var(--shadow);
+    backdrop-filter: blur(10px);
+  }
+  .env-body::after{
+    content:""; position:absolute; inset:0;
+    background:
+      repeating-linear-gradient(90deg, rgba(255,255,255,.025), rgba(255,255,255,.025) 1px, transparent 1px, transparent 3px),
+      repeating-linear-gradient(0deg, rgba(255,255,255,.015), rgba(255,255,255,.015) 1px, transparent 1px, transparent 2px);
+    pointer-events:none;
+    opacity:.35;
+  }
+
+  .env-label{
+    position:absolute; left:24px; right:24px; bottom:24px;
+    background: rgba(0,0,0,.22);
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:14px;
+    padding:10px 14px;
+    text-align:center;
+    font-weight:800;
+    color: var(--muted);
+    box-shadow: 0 0 0 1px rgba(255,255,255,.06) inset;
+  }
+
+  .flap{
+    position:absolute; top:0; left:0; right:0; height:58%;
+    transform-origin: top center; transform: rotateX(0deg);
+    transition: transform 900ms cubic-bezier(.2,.8,.1,1);
+    clip-path: polygon(0 0,100% 0,50% 100%);
+    background: linear-gradient(135deg, rgba(47,123,255,.42), rgba(255,47,178,.26));
+    border-top-left-radius:18px;border-top-right-radius:18px;
+    border:1px solid rgba(255,255,255,.14); border-bottom:none;
+    box-shadow: 0 14px 18px rgba(0,0,0,.30) inset, 0 -10px 14px rgba(255,255,255,.10) inset;
+  }
+  .flap::after{
+    content:""; position:absolute; left:50%; top:50%; transform:translate(-50%,-10%);
+    width:70%; height:2px; background:linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent);
+    opacity:.55;
+  }
+
+  /* Wax seal */
+  .seal{
+    position:absolute; left:50%; top:42%;
+    transform:translate(-50%,-50%); width:66px; height:66px; border-radius:50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,47,178,.95) 0%, rgba(255,47,178,.55) 55%, rgba(47,123,255,.25) 100%);
+    display:grid; place-items:center; color:#fff; font-weight:900; letter-spacing:.5px;
+    box-shadow: 0 10px 26px rgba(255,47,178,.35), 0 0 22px rgba(255,47,178,.35);
+    text-shadow:0 1px 0 rgba(0,0,0,.35);
+    border: 1px solid rgba(255,255,255,.16);
+    user-select:none;
+  }
+  .seal::after{
+    content:""; position:absolute; inset:-8px; border-radius:50%;
+    background: radial-gradient(circle at 30% 25%, rgba(255,255,255,.35) 0, transparent 45%);
+    filter: blur(2px); pointer-events:none;
+  }
+  @keyframes wiggle{
+    0%  { transform:translate(-50%,-50%) rotate(0deg); }
+    25% { transform:translate(-50%,-50%) rotate(-6deg); }
+    50% { transform:translate(-50%,-50%) rotate(6deg); }
+    75% { transform:translate(-50%,-50%) rotate(-3deg); }
+    100%{ transform:translate(-50%,-50%) rotate(0deg); }
+  }
+  .seal.wiggle{ animation: wiggle .35s ease; }
+
+  /* stamp emoji */
+  .stamp{
+    position:absolute;
+    top: 22px;
+    right: 24px;
+    font-size: 28px;
+    filter: drop-shadow(0 0 10px rgba(47,123,255,.28)) drop-shadow(0 0 10px rgba(255,47,178,.18));
+    user-select:none;
+  }
+
+  /* Öffnen button + ripple */
+  .open-wrap{ position:absolute; bottom:-26px; left:0; right:0; display:flex; justify-content:center; }
+  .open-btn{
+    background: linear-gradient(180deg, rgba(47,123,255,.98), rgba(47,123,255,.70));
+    color: var(--neon-pink); /* neon pink text */
+    font-weight:900; border:0; border-radius:16px; padding:13px 22px; cursor:pointer;
+    box-shadow: 0 16px 30px rgba(47,123,255,.35), 0 0 18px rgba(47,123,255,.18);
+    transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+    position:relative; overflow:hidden;
+    letter-spacing:.2px;
+    text-shadow: 0 0 10px rgba(255,47,178,.42), 0 0 18px rgba(255,47,178,.22);
+    -webkit-text-stroke: .35px rgba(255,255,255,.16);
+  }
+  .open-btn:hover{ filter: brightness(1.04); box-shadow: 0 18px 36px rgba(47,123,255,.38), 0 0 22px rgba(255,47,178,.16); }
+  .open-btn:active{ transform:translateY(1px) }
+  .open-btn:disabled{ opacity:.55; cursor:not-allowed; filter:saturate(.9); }
+
+  .open-btn::after{
+    content:""; position:absolute; left:-40%; top:-200%;
+    width:80%; height:400%; transform:rotate(25deg);
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.42), transparent);
+    animation:glint 4.8s linear infinite;
+  }
+  @keyframes glint{ 0%{left:-40%} 55%{left:140%} 100%{left:140%} }
+
+  .ripple{
+    position:absolute; border-radius:9999px; pointer-events:none;
+    transform:translate(-50%,-50%);
+    background: radial-gradient(circle,
+      rgba(255,47,178,.35) 0%,
+      rgba(47,123,255,.22) 45%,
+      rgba(255,255,255,.10) 60%,
+      transparent 70%);
+    animation: rippleOut .6s ease-out forwards;
+  }
+  @keyframes rippleOut{
+    from{ width:0;height:0; opacity:.35 }
+    to  { width:240px;height:240px; opacity:0 }
+  }
+
+  .opened .flap{ transform: rotateX(-185deg); }
+  .opened .open-wrap{display:none}
+
+  .origami-line{
+    position:absolute; top:64px; right:26px; width:120px; height:22px; pointer-events:none; opacity:.75;
+  }
+  .origami-line svg path{ stroke: rgba(47,123,255,.70); }
+
+  .stamp-cancel{
+    position:absolute; top:24px; left:62px; width:160px; height:70px; transform: rotate(-16deg);
+    pointer-events:none; opacity:.55;
+  }
+  .stamp-cancel svg path{ stroke: rgba(255,47,178,.55); }
+
+  /* Card */
+.card{
+  position:relative;
+  margin-top:36px;
+  border-radius:22px;
+  overflow:hidden;
+  display:none;
+  margin-bottom: calc(var(--floor-gap) * .6);
+  backdrop-filter: blur(12px);
+
+  /* قاب نئونی پایدار روی همه دیوایس‌ها */
+  border:2px solid transparent;
+  background:
+    linear-gradient(var(--paper), var(--paper)) padding-box,
+    linear-gradient(120deg, var(--gold1), var(--gold2), var(--gold3), var(--gold2)) border-box;
+
+  box-shadow:
+    var(--shadow),
+    0 0 18px rgba(47,123,255,.25),
+    0 0 18px rgba(255,47,178,.20);
+}
+
+.card.show{
+  display:block;
+  animation:pop .7s ease;
+}
+
+@keyframes pop{
+  from{transform:translateY(10px); opacity:0}
+  to  {transform:translateY(0); opacity:1}
+}
+
+/* فقط هاله‌ی نئونی نرم اطراف، بدون ماسک‌بازی */
+.card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  pointer-events:none;
+  box-shadow:
+    0 0 32px rgba(47,123,255,.16),
+    0 0 28px rgba(255,47,178,.14);
+}
+
+  .card::after{
+    content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+    background:
+      repeating-linear-gradient(90deg, rgba(255,255,255,.016), rgba(255,255,255,.016) 1px, transparent 1px, transparent 3px),
+      repeating-linear-gradient(0deg, rgba(255,255,255,.010), rgba(255,255,255,.010) 1px, transparent 1px, transparent 2px);
+    opacity:.35;
+  }
+
+  .card-header{
+    padding:16px 20px;
+    background: linear-gradient(90deg, rgba(47,123,255,.14), rgba(255,47,178,.10));
+    display:flex; align-items:center; gap:8px;
+    border-bottom:1px solid rgba(255,255,255,.10);
+    overflow: visible;
+  }
+
+  .chip{display:inline-block; color: rgba(234,240,255,.88); font-weight:900; font-size:12px; letter-spacing:.15px;}
+  .chip.ribbon{
+    position:relative; background: rgba(0,0,0,.20);
+    padding:8px 18px; border-radius:12px;
+    border:1px solid rgba(255,255,255,.12);
+    box-shadow:0 1px 0 rgba(255,255,255,.06) inset;
+  }
+  .chip.ribbon::before,
+  .chip.ribbon::after{
+    content:""; position:absolute; top:50%; width:16px; height:16px;
+    background: rgba(0,0,0,.22);
+    border:1px solid rgba(255,255,255,.12);
+    box-shadow:0 0 0 1px rgba(255,255,255,.06) inset;
+    transform:translateY(-50%) rotate(45deg);
+  }
+  .chip.ribbon::before{ left:-10px; }
+  .chip.ribbon::after{  right:-10px; }
+
+  .card-body{
+    padding:24px;
+    line-height:1.95; position:relative;
+    padding-bottom: calc(24px + var(--scroll-pad));
+  }
+  .card-body::after{
+    content:""; position:absolute; inset:0; border-radius:18px; pointer-events:none;
+    box-shadow: inset 0 0 90px rgba(47,123,255,.10), inset 0 0 70px rgba(255,47,178,.08);
+  }
+
+  .gilded-corner{ position:absolute; width:100px; height:100px; pointer-events:none; opacity:.18; filter: blur(.2px); }
+  .gilded-corner svg path,
+  .gilded-corner svg circle{ stroke: rgba(255,255,255,.60); fill: rgba(47,123,255,.08); }
+  .gilded-corner.tl{ top:10px; left:10px; transform: rotate(0deg); }
+  .gilded-corner.br{ bottom:10px; right:10px; transform: rotate(180deg); }
+
+  h1{font-size:26px; margin:0 0 6px}
+  .subline{ font-size:14px; opacity:.82; margin:-2px 0 10px; font-style:italic; }
+
+  .gold{
+    background: linear-gradient(90deg, var(--rose), var(--rose-2), rgba(255,255,255,.88));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .gold.glint{ background-size:200% auto; animation:goldglint 9.2s linear infinite; }
+  @keyframes goldglint{ 0%{background-position:-60% 0} 45%{background-position:160% 0} 100%{background-position:160% 0} }
+
+  .gold.neon{
+    -webkit-text-stroke: 1px rgba(255,255,255,.22);
+    text-shadow: 0 0 10px rgba(47,123,255,.30), 0 0 12px rgba(255,47,178,.22);
+    filter: drop-shadow(0 0 10px rgba(47,123,255,.22));
+  }
+  .gold.neon.breathe{ animation: neon-outline-breathe 2.8s ease-in-out infinite; }
+
+  #letter .neon-word{
+    color: inherit;
+    -webkit-text-stroke: .9px rgba(255,255,255,.22);
+    text-shadow: 0 0 10px rgba(255,47,178,.40), 0 0 18px rgba(255,47,178,.22);
+    filter: drop-shadow(0 0 6px rgba(255,47,178,.18));
+    border-radius: 2px;
+    font-weight: 900;
+  }
+  #letter .neon-word.breathe{ animation: neon-outline-breathe 2.4s ease-in-out infinite; }
+
+  @keyframes neon-outline-breathe{
+    0%,100%{
+      text-shadow: 0 0 10px rgba(47,123,255,.26), 0 0 16px rgba(255,47,178,.20);
+      filter: drop-shadow(0 0 8px rgba(47,123,255,.16));
+    }
+    50%{
+      text-shadow: 0 0 14px rgba(47,123,255,.34), 0 0 22px rgba(255,47,178,.26);
+      filter: drop-shadow(0 0 10px rgba(255,47,178,.18));
+    }
+  }
+
+  .muted{opacity:.86; font-size:14px; color: var(--muted); font-weight:800;}
+  .letter{white-space:pre-wrap; font-size:17px; margin-top:10px; color: rgba(234,240,255,.92); }
+  .fade{animation:fade .35s ease}
+  @keyframes fade{from{opacity:0; transform:translateY(3px)}to{opacity:1; transform:translateY(0)}}
+
+  .divider{
+    --gap: 14px; --thick: 1.5px;
+    position:relative; height:22px; margin:14px 0;
+  }
+  .divider::before{
+    content:""; position:absolute; left:12px; right:12px; top:50%;
+    height:var(--thick); transform:translateY(-50%);
+    background:
+      linear-gradient(90deg, rgba(47,123,255,.90), rgba(255,47,178,.75)) left  / calc(50% - var(--gap)) var(--thick) no-repeat,
+      linear-gradient(90deg, rgba(255,47,178,.75), rgba(47,123,255,.90)) right / calc(50% - var(--gap)) var(--thick) no-repeat;
+  }
+  .divider::after{
+    content:""; position:absolute; left:50%; top:50%;
+    width:18px; height:18px; transform:translate(-50%,-50%) rotate(45deg);
+    background: rgba(0,0,0,.22);
+    border:2px solid rgba(255,255,255,.14);
+    box-shadow: 0 0 18px rgba(47,123,255,.22), 0 0 18px rgba(255,47,178,.16);
+  }
+
+  .quotes{ margin-top:18px; padding-top:10px; border-top:none; }
+  .q-title{font-weight:900; margin:0 0 8px; color: rgba(234,240,255,.92); }
+  .q-box{
+    font-size:20px; line-height:1.8; text-align:center; padding:12px 14px;
+    border:1px dashed rgba(255,255,255,.18);
+    border-radius:16px;
+    background: rgba(0,0,0,.22);
+    position:relative; overflow:visible;
+    color: rgba(234,240,255,.85);
+    box-shadow: 0 0 20px rgba(47,123,255,.16);
+  }
+  #quoteText{ position:relative; }
+  .q-author{ text-align:center; opacity:.75; margin-top:6px; color: var(--muted); }
+
+  .dots{ display:flex; gap:8px; justify-content:center; align-items:center; margin:10px 0 6px; flex-wrap:wrap; }
+  .dot{
+    width:10px; height:10px; border-radius:50%;
+    border:2px solid rgba(255,255,255,.18);
+    background:transparent;
+    cursor:pointer; transition: transform .12s ease, background .12s ease, border-color .12s ease;
+  }
+  .dot.active{
+    background:var(--dot-active);
+    border-color: rgba(255,47,178,.70);
+    transform:scale(1.05);
+    box-shadow: 0 0 12px rgba(255,47,178,.30);
+  }
+
+  .q-actions{ display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-top:8px}
+
+  .q-progress{ height:2px; background:rgba(255,255,255,.10); border-radius:999px; overflow:hidden; margin:6px 12px 0; }
+  .q-progress .bar{ height:100%; width:0%; background: linear-gradient(90deg, rgba(47,123,255,.95), rgba(255,47,178,.85)); }
+  .q-progress.run .bar{ animation: qbar var(--qdur, 6s) linear forwards; }
+  @keyframes qbar{ from{width:0%} to{width:100%} }
+
+  .pulse-heart{
+    position:absolute; left:50%; top:50%;
+    transform:translate(-50%,-50%) scale(.6);
+    font-size:22px; pointer-events:none; animation:pulseOut .4s ease forwards;
+  }
+  @keyframes pulseOut{ to{ transform:translate(-50%,-50%) scale(1.6); opacity:0 } }
+
+  .actions{ display:flex; gap:10px; align-items:center; justify-content:center; flex-wrap:wrap; margin:12px 0 6px; }
+
+  /* Buttons: neon pink text everywhere */
+  .btn{
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:12px;
+    padding:10px 14px;
+    cursor:pointer;
+    font-weight:900;
+    background: rgba(0,0,0,.22);
+    color: var(--neon-pink);
+    transition: box-shadow .15s ease, transform .08s ease, filter .12s ease;
+    box-shadow: 0 0 0 1px rgba(255,255,255,.06) inset;
+    text-shadow: 0 0 10px rgba(255,47,178,.40), 0 0 18px rgba(255,47,178,.20);
+    -webkit-text-stroke: .35px rgba(255,255,255,.14);
+  }
+  .btn:hover{
+    box-shadow:
+      0 0 18px rgba(255,47,178,.18),
+      0 0 16px rgba(47,123,255,.12),
+      0 0 0 1px rgba(255,255,255,.08) inset;
+    filter: brightness(1.04);
+  }
+  .btn:active{ transform: translateY(1px); }
+  .btn:disabled{ opacity:.55; cursor:not-allowed; filter:saturate(.9); }
+
+  .btn.primary{
+    background: linear-gradient(180deg, rgba(47,123,255,.98), rgba(47,123,255,.68));
+    border-color: rgba(47,123,255,.55);
+    box-shadow: 0 0 18px rgba(47,123,255,.24);
+  }
+
+  .vol-wrap{ display:flex; align-items:center; gap:8px; }
+  .vol-label{ font-size:12px; opacity:.75; color: var(--muted); }
+  input[type="range"]{
+    -webkit-appearance:none; appearance:none; height:8px; width:140px; border-radius:999px;
+    background: linear-gradient(90deg, rgba(47,123,255,.55), rgba(255,47,178,.45));
+    outline:none; border:1px solid rgba(255,255,255,.12);
+  }
+  input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance:none; appearance:none; width:18px; height:18px; border-radius:50%;
+    background: rgba(0,0,0,.30);
+    border:2px solid var(--rose-2);
+    box-shadow: 0 0 16px rgba(255,47,178,.22);
+  }
+  input[type="range"]::-moz-range-thumb{
+    width:18px; height:18px; border-radius:50%;
+    background: rgba(0,0,0,.30);
+    border:2px solid var(--rose-2);
+    box-shadow: 0 0 16px rgba(255,47,178,.22);
+  }
+
+  .music-visual{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    margin-top:6px;
+    opacity:.9;
+    flex-wrap:wrap;
+  }
+  .music-visual .heart{ font-size:18px; width:22px; text-align:center; transform-origin:center; opacity:.72; }
+  .music-visual.on .heart{ animation:mbeat 1.1s ease-in-out infinite; }
+  .music-visual.on .heart:nth-child(3n+1){ animation-delay:0s }
+  .music-visual.on .heart:nth-child(3n+2){ animation-delay:.15s }
+  .music-visual.on .heart:nth-child(3n){ animation-delay:.3s }
+  @keyframes mbeat{ 0%,100%{transform:scale(1)} 25%{transform:scale(1.25)} 50%{transform:scale(1.05)} 75%{transform:scale(1.2)} }
+
+  .ps-toggle{ margin-top:10px; }
+  .ps{
+    margin-top:8px;
+    font-style:italic;
+    opacity:.88;
+    display:none;
+    color: rgba(234,240,255,.80);
+  }
+  .ps.show{ display:block; }
+
+  /* ===== PRINT: Clean document (no UI clutter) ===== */
+  @media print{
+    @page{ size:A4; margin:16mm 14mm 18mm 18mm; }
+
+    html,body{
+      background:#fff !important; height:auto !important; overflow:visible !important;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+      margin:0 !important; padding:0 !important;
+      color:#111 !important;
+    }
+
+    body::before{ display:none !important; }
+    #confetti{ display:none !important; }
+
+    /* Only print the card */
+    body > *{ visibility:hidden !important; }
+    .stage{ display:block !important; visibility:visible !important; }
+    .stage > :not(.card){ display:none !important; }
+    .card, .card *{ visibility:visible !important; }
+
+    /* card becomes a clean page */
+    .card{
+      display:block !important; position:static !important;
+      width: calc((210mm - 18mm - 14mm) / var(--print-zoom, 1)) !important;
+      margin:0 !important;
+      box-shadow:none !important;
+      border:1px solid #e9e9e9 !important;
+      background:#fff !important;
+      backdrop-filter:none !important;
+      break-inside: avoid !important; page-break-inside: avoid !important;
+      zoom: var(--print-zoom, 1) !important;
+      transform: none !important;
+      transform-origin: top left !important;
+    }
+
+    @supports not (zoom: 1){
+      .card{
+        zoom: 1 !important;
+        transform: scale(var(--print-zoom, 1)) !important;
+        transform-origin: top left !important;
+      }
+    }
+
+    /* remove decorations & UI */
+    .card::before, .card::after,
+    .gilded-corner, .stamp-cancel, .origami-line,
+    .dots, .q-actions, .actions, .music-visual,
+    .divider, .q-progress, .quotes, .ps-toggle{ display:none !important; }
+
+    .card-header{ background:#fff !important; border-bottom:1px solid #e9e9e9 !important; }
+    .chip{ color:#111 !important; }
+    .chip.ribbon{ background:#fff !important; border:1px solid #e9e9e9 !important; }
+
+    .card-body{
+      padding:14mm 16mm !important;
+      padding-bottom:14mm !important;
+      box-shadow:none !important;
+    }
+
+    .letter{ font-size:16px !important; line-height:1.8 !important; color:#111 !important; margin-top:8px !important; }
+    .muted, .subline{ color:#333 !important; opacity:1 !important; }
+
+    /* neon name becomes plain */
+    .gold{
+      color:#111 !important;
+      -webkit-text-stroke:0 !important;
+      text-shadow:none !important;
+      filter:none !important;
+      background:none !important;
+    }
+    .gold.neon{ text-shadow:none !important; filter:none !important; }
+    #letter .neon-word{ text-shadow:none !important; filter:none !important; -webkit-text-stroke:0 !important; font-weight:700 !important; }
+
+    /* Print PS as plain text if it was toggled on */
+    .ps{ display:block !important; color:#333 !important; opacity:1 !important; margin-top:10mm !important; }
+
+    .print-sign{ display:block !important; margin-top:10mm; text-align:right; font-family:cursive; opacity:.9; color:#111 !important; }
+  }
+
+  .print-sign{ display:none; }
+
+  /* Optional: When measuring print scale in JS */
+  .print-measure body::before{ display:none !important; }
+  .print-measure .quotes,
+  .print-measure .actions,
+  .print-measure .music-visual,
+  .print-measure .divider,
+  .print-measure .q-progress,
+  .print-measure .ps-toggle{ display:none !important; }
+</style>
+</head>
+
+<body>
+<canvas id="confetti"></canvas>
+
+<div class="stage">
+
+  <!-- Umschlag -->
+  <section class="envelope" id="envelope" aria-label="Geburtstags-Umschlag">
+    <div class="env-body"></div>
+    <div class="flap" id="flap"></div>
+    <div class="seal" id="seal" aria-hidden="true">R</div>
+    <div class="stamp" aria-hidden="true">🎂</div>
+
+    <div class="stamp-cancel" aria-hidden="true">
+      <svg viewBox="0 0 220 60" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 10 C45 0, 85 20, 130 10 S200 20, 220 10" stroke-width="2" fill="none"/>
+        <path d="M0 25 C45 15, 85 35, 130 25 S200 35, 220 25" stroke-width="2" fill="none"/>
+        <path d="M0 40 C45 30, 85 50, 130 40 S200 50, 220 40" stroke-width="2" fill="none"/>
+      </svg>
+    </div>
+
+    <div class="origami-line" aria-hidden="true">
+      <svg viewBox="0 0 120 22" xmlns="http://www.w3.org/2000/svg" fill="none">
+        <path d="M6 16 L34 6 L62 16 L90 6 L114 14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <div class="env-label">
+     <b id="toName"></b> Eshgham, Tavalodet Mobarak ❤️‍🔥🎉
+    </div>
+
+    <div class="open-wrap">
+      <button class="open-btn" id="openBtn" aria-label="Öffnen">✨ Angoshte Zibato bezan inja. ✨</button>
+    </div>
+  </section>
+
+  <!-- Karte -->
+  <article class="card" id="card">
+    <div class="card-header">
+      <span class="chip ribbon">13, Januar, 2026</span>
+    </div>
+
+    <div class="card-body">
+      <div class="gilded-corner tl" aria-hidden="true">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="24" cy="24" r="6"/>
+          <circle cx="38" cy="18" r="5"/>
+          <circle cx="18" cy="38" r="5"/>
+          <path d="M12 70 Q30 52 50 60 T88 42" stroke-width="2" fill="none"/>
+          <path d="M20 78 Q36 62 58 66" stroke-width="2" fill="none"/>
+        </svg>
+      </div>
+      <div class="gilded-corner br" aria-hidden="true">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="24" cy="24" r="6"/>
+          <circle cx="38" cy="18" r="5"/>
+          <circle cx="18" cy="38" r="5"/>
+          <path d="M12 70 Q30 52 50 60 T88 42" stroke-width="2" fill="none"/>
+          <path d="M20 78 Q36 62 58 66" stroke-width="2" fill="none"/>
+        </svg>
+      </div>
+
+      <h1>Für <span id="name" class="gold glint neon breathe">Royam</span> 🎉</h1>
+      <div class="subline">Alles Gute zum Geburtstag  💙💖</div>
+
+      <div class="muted">Mein Ein und Alles,</div>
+      <div class="letter" id="letter">🎈🎈🎈</div>
+
+      <div class="divider" aria-hidden="true"></div>
+
+      <button class="btn ps-toggle" id="psToggle" aria-expanded="false">Noch eins: 🎁</button>
+      <div class="ps" id="psText">Heute ist dein Tag. Nimm dir alles Schöne mit und lass den Rest einfach liegen. ✨</div>
+
+      <div class="divider" aria-hidden="true"></div>
+
+      <section class="quotes" id="quotes" role="region" aria-label="Zitat-Karussell">
+        <h3 class="q-title">Sätze die du von mir merken sollst. 🎂🎈</h3>
+        <div id="quoteText" class="q-box fade">…</div>
+        <div id="quoteAuthor" class="q-author"></div>
+
+        <div id="qProgress" class="q-progress" aria-hidden="true"><div class="bar"></div></div>
+
+        <div id="dots" class="dots" aria-label="Position"></div>
+        <div class="q-actions">
+          <button class="btn" id="prevBtn" aria-label="Vorheriges Zitat">Zurückblättern ⟵</button>
+          <button class="btn" id="nextBtn" aria-label="Nächstes Zitat">Weiterblättern ⟶</button>
+          <button class="btn" id="randBtn" aria-label="Zufälliges Zitat">Überrasch mich ✨</button>
+          <button class="btn" id="autoBtn" aria-pressed="false" aria-label="Auto-Play umschalten">Herzschlag: Aus 🤍</button>
+        </div>
+      </section>
+
+      <div class="actions">
+        <button class="btn primary" id="replay">Nochmal lesen 🎊</button>
+        <button class="btn" id="pdf">Als Andenken speichern 🧾</button>
+        <button class="btn" id="musicBtn">Melodie 🎵</button>
+        <div class="vol-wrap" aria-label="Lautstärke">
+          <span class="vol-label">🔊</span>
+          <input id="volume" type="range" min="0" max="100" value="70" step="1" />
+        </div>
+      </div>
+
+      <div class="music-visual" id="musicViz" aria-hidden="true">
+        <span class="heart">💙</span><span class="heart">💖</span><span class="heart">💙</span><span class="heart">💖</span><span class="heart">💙</span>
+        <span class="heart">💖</span><span class="heart">💙</span><span class="heart">💖</span><span class="heart">💙</span><span class="heart">💖</span>
+        <span class="heart">💙</span><span class="heart">💖</span><span class="heart">💙</span><span class="heart">💖</span><span class="heart">💙</span>
+      </div>
+
+      <div class="print-sign">Mit Liebe</div>
+    </div>
+  </article>
+</div>
+
+<!-- Audio -->
+<audio id="bgm" src="./bg.mp3" preload="auto" playsinline type="audio/mpeg" loop></audio>
+<audio id="fxOpen" preload="none" src="paper.mp3"></audio>
+
+<script>
+  
+  const letterText  = `Heute sagen alle „Alles Gute zum Geburtstag“, aber ich möchte dich an etwas erinnern, das du selbst vielleicht oft vergisst: Du bist wertvoller, als du dich selbst siehst. ✨🌸
+
+Vielleicht siehst du dich manchmal als ganz normal, vielleicht denkst du manchmal: „Ich mache doch nichts Besonderes“, aber aus meiner Sicht ist genau der Mensch, der du bist, mit all deiner Schüchternheit, deiner leisen Freundlichkeit, deiner Zerbrechlichkeit und Sensibilität, viel mehr als genug schön, selten und wichtig. 💗🌷
+
+Du hinterlässt deine Spuren nicht nur in deinem eigenen Leben, du hast auch in meinem Herzen eine tiefe Spur hinterlassen. Mit einer einfachen Nachricht, mit einem halben Lächeln kannst du meine Stimmung verändern; das bedeutet, dass du selbst ein Wert bist, auch wenn dir das gar nicht bewusst ist. 💫👣
+
+Ich möchte, dass du weißt, dass ich nicht nur in dein schönes Gesicht verliebt bin, sondern in das Herz dahinter, das sich hinter diesem Gesicht versteckt. ❤️‍🔥💌
+
+Dein Geburtstag ist für mich nicht nur ein Datum im Kalender; er ist die Erinnerung daran, dass an diesem Tag ein Mädchen auf die Welt gekommen ist, das heute das Blau meines Herzens geworden ist. 🌌🎁
+
+Ich bin glücklich, dich „Roya“ nennen zu dürfen, und jedes Mal, wenn ich deinen Namen sage, spüre ich, wie sich eine besondere Schönheit in meinem Herzen bewegt. 🩵✨
+
+Alles Gute zum Geburtstag, Roya. 🎂💙
+Für das Mädchen, das genau wie ihr Name der schönste Traum meines Herzens ist. 🌙💭`;
+
+  const NEON_WORDS = ["Geburtstag","Wertvoller","Herzen","Wert","Heute","Roya","Herz","Blau","Herzens"];
+
+  // ===== Elements =====
+  const envEl = document.getElementById("envelope");
+  const openBtn = document.getElementById("openBtn");
+  const card = document.getElementById("card");
+  const letterEl = document.getElementById("letter");
+  const nameEl = document.getElementById("name");
+  const musicBtn = document.getElementById("musicBtn");
+  const volumeEl = document.getElementById("volume");
+  const bgm = document.getElementById("bgm");
+  const fxOpen = document.getElementById("fxOpen");
+  const musicViz = document.getElementById("musicViz");
+  const psToggle = document.getElementById("psToggle");
+  const psText = document.getElementById("psText");
+  const sealEl = document.getElementById("seal");
+
+  const quoteText = document.getElementById("quoteText");
+  const quoteAuthor = document.getElementById("quoteAuthor");
+  const dotsWrap = document.getElementById("dots");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const randBtn = document.getElementById("randBtn");
+  const autoBtn = document.getElementById("autoBtn");
+  const replayBtn = document.getElementById("replay");
+  const pdfBtn = document.getElementById("pdf");
+  const quotesSection = document.getElementById("quotes");
+  const qProgress = document.getElementById("qProgress");
+
+  const ALL_BUTTONS = Array.from(document.querySelectorAll("button"));
+
+  // ===== Robust UI State (fix spam-click bugs) =====
+  const STATE = Object.freeze({ CLOSED:"CLOSED", OPENING:"OPENING", TYPING:"TYPING", READY:"READY" });
+  let appState = STATE.CLOSED;
+
+  let globalLock = false;
+  const lastClick = new Map();
+
+  function now(){ return performance.now(); }
+  function throttle(key, ms=280){
+    const t = lastClick.get(key) || 0;
+    const n = now();
+    if (n - t < ms) return false;
+    lastClick.set(key, n);
+    return true;
+  }
+  function setState(s){
+    appState = s;
+    syncUI();
+  }
+  function syncUI(){
+    const isClosed = (appState === STATE.CLOSED);
+    const isOpening = (appState === STATE.OPENING);
+    const isTyping = (appState === STATE.TYPING);
+    const isReady = (appState === STATE.READY);
+
+    openBtn.disabled = !isClosed || globalLock;
+
+    // during OPENING/TYPING: block high-risk actions
+    const block = globalLock || isOpening;
+
+    // keep volume usable always
+    for (const b of ALL_BUTTONS){
+      if (b === openBtn) continue;
+      if (b === musicBtn) continue;
+      if (b === psToggle) continue;
+      if (b === pdfBtn) continue;
+
+      // allow quote navigation only when ready
+      if ([prevBtn, nextBtn, randBtn, autoBtn, replayBtn].includes(b)){
+        b.disabled = !(isReady) || block;
+        continue;
+      }
+
+      // default: enable when card is visible
+      b.disabled = !(card.classList.contains("show")) || block;
+    }
+
+    // PS toggle allowed if card is visible
+    psToggle.disabled = !(card.classList.contains("show")) || block;
+
+    // pdf allowed if card is visible
+    pdfBtn.disabled = !(card.classList.contains("show")) || block;
+  }
+
+  async function withLock(fn){
+    if (globalLock) return;
+    globalLock = true;
+    syncUI();
+    try{ await fn(); }
+    finally{
+      globalLock = false;
+      syncUI();
+    }
+  }
+
+  // ===== Confetti (Canvas, no libs) =====
+  const canvas = document.getElementById("confetti");
+  const ctx = canvas.getContext("2d");
+  const COLORS = ["#2F7BFF", "#FF2FB2", "rgba(255,255,255,.95)"];
+  let confettiPieces = [];
+  let confettiTimer = null;
+
+  function resizeCanvas(){
+    canvas.width = window.innerWidth * devicePixelRatio;
+    canvas.height = window.innerHeight * devicePixelRatio;
+    ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+  }
+  window.addEventListener("resize", resizeCanvas);
+  resizeCanvas();
+
+  function spawnConfetti(n){
+    for (let i=0;i<n;i++){
+      confettiPieces.push({
+        x: Math.random() * window.innerWidth,
+        y: -20 - Math.random()*80,
+        w: 6 + Math.random()*6,
+        h: 10 + Math.random()*10,
+        vx: (-1 + Math.random()*2) * 1.25,
+        vy: 2.2 + Math.random()*3.2,
+        rot: Math.random()*Math.PI,
+        vr: (-1 + Math.random()*2) * 0.09,
+        color: COLORS[Math.floor(Math.random()*COLORS.length)],
+        life: 240 + Math.random()*160
+      });
+    }
+  }
+
+  function stepConfetti(){
+    ctx.clearRect(0,0,window.innerWidth, window.innerHeight);
+    confettiPieces = confettiPieces.filter(p => p.life > 0 && p.y < window.innerHeight + 40);
+
+    for (const p of confettiPieces){
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rot += p.vr;
+      p.vx *= 0.999;
+      p.vy *= 0.9995;
+      p.life--;
+
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = 0.95;
+      ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+      ctx.restore();
+    }
+    if (confettiPieces.length > 0) requestAnimationFrame(stepConfetti);
+  }
+
+  function burstConfetti(durationMs){
+    spawnConfetti(140);
+    if (confettiPieces.length > 0) requestAnimationFrame(stepConfetti);
+
+    if (confettiTimer) clearInterval(confettiTimer);
+    const t0 = Date.now();
+    confettiTimer = setInterval(() => {
+      spawnConfetti(60);
+      if (Date.now() - t0 > durationMs){
+        clearInterval(confettiTimer);
+        confettiTimer = null;
+      }
+    }, 220);
+  }
+
+  // ===== Typing + Cancel-safe (fix stuck letter) =====
+  let typeRun = 0;
+  let typeTimeoutId = null;
+
+  function cancelTyping(){
+    typeRun++;
+    if (typeTimeoutId) { clearTimeout(typeTimeoutId); typeTimeoutId = null; }
+  }
+
+  function typeWriter(text, el){
+    cancelTyping();
+    const run = ++typeRun;
+
+    setState(STATE.TYPING);
+    el.textContent = "";
+
+    const speed = 24;
+    let i = 0;
+
+    const step = () => {
+      if (run !== typeRun) return; // canceled
+      if (i < text.length){
+        i++;
+        el.textContent = text.slice(0, i);
+        typeTimeoutId = setTimeout(step, speed);
+      } else {
+        typeTimeoutId = null;
+        highlightLetter();
+        setState(STATE.READY);
+      }
+    };
+    step();
+  }
+
+  // ===== Neon highlight =====
+  function escapeRegExp(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+  function buildRegex(words){
+    if(!words || !words.length) return null;
+    const pattern = words.map(escapeRegExp).join('|');
+    return new RegExp(`(${pattern})`,'giu');
+  }
+  function isLetterOrDigit(ch){ return ch && /\p{L}|\p{N}/u.test(ch); }
+
+  function highlightNodeText(node, re){
+    const text = node.nodeValue;
+    if(!text || !re.test(text)) return;
+    const frag = document.createDocumentFragment();
+    let p = 0; re.lastIndex = 0; let m;
+
+    while((m = re.exec(text)) !== null){
+      const start = m.index, end = re.lastIndex;
+      const prev = text[start-1], next = text[end];
+      const isBoundary = !isLetterOrDigit(prev) && !isLetterOrDigit(next);
+      if(isBoundary){
+        if(start > p){ frag.appendChild(document.createTextNode(text.slice(p, start))); }
+        const span = document.createElement('span');
+        span.className = 'neon-word breathe';
+        span.textContent = m[0];
+        frag.appendChild(span);
+        p = end;
+      }
+    }
+    if(p < text.length) frag.appendChild(document.createTextNode(text.slice(p)));
+    node.parentNode.replaceChild(frag, node);
+  }
+
+  function walkAndHighlight(root, re){
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(n){ return (!n.nodeValue || !n.nodeValue.trim()) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT; }
+    });
+    const texts = []; let cur;
+    while(cur = walker.nextNode()){
+      if(cur.parentElement && cur.parentElement.closest('.neon-word')) continue;
+      texts.push(cur);
+    }
+    texts.forEach(n => highlightNodeText(n, re));
+  }
+
+  function highlightLetter(){
+    const re = buildRegex(NEON_WORDS);
+    if(!re) return;
+    walkAndHighlight(letterEl, re);
+  }
+
+  // ===== PS toggle =====
+  psToggle?.addEventListener('click', ()=>{
+    if (!throttle("ps", 200)) return;
+    psText.classList.toggle('show');
+    psToggle.setAttribute('aria-expanded', psText.classList.contains('show') ? 'true' : 'false');
+  });
+
+  // ===== Name double-click =====
+  nameEl?.addEventListener('dblclick', ()=>{
+    nameEl.classList.add('ringflash');
+    setTimeout(()=> nameEl.classList.remove('ringflash'), 450);
+  });
+
+  // ===== Music =====
+  let isPlaying = false;
+  let didFirstFade = false;
+
+  function vizOn(){ musicViz?.classList.add("on"); }
+  function vizOff(){ musicViz?.classList.remove("on"); }
+
+  function fadeInTo(targetVol= (volumeEl?.value||70)/100, ms=1000){
+    const steps = Math.max(1, Math.floor(ms/50));
+    let k=0;
+    bgm.volume=0;
+    const it = setInterval(()=>{
+      k++;
+      bgm.volume = (k/steps) * targetVol;
+      if(k>=steps){ clearInterval(it); bgm.volume = targetVol; }
+    },50);
+  }
+
+  async function tryPlay(){
+    try{
+      if (fxOpen && fxOpen.src && !fxOpen.error) {
+        try{ fxOpen.currentTime=0; fxOpen.playbackRate=1.1; fxOpen.volume=.28; fxOpen.play(); }catch(e){}
+      }
+      await bgm.play();
+      isPlaying = true;
+      if(!didFirstFade && bgm.currentTime < 0.2){ didFirstFade = true; fadeInTo(); }
+      else{ bgm.volume = (volumeEl?.value||70) / 100; }
+      musicBtn.textContent = "Melodie 🎵";
+      vizOn();
+    }catch(e){
+      isPlaying = false; vizOff();
+    }
+  }
+
+  musicBtn?.addEventListener("click", async ()=>{
+    if (!throttle("music", 250)) return;
+    if(!bgm.src || bgm.error){ alert("Lege die Datei „bg.mp3“ neben diese HTML-Datei, um Musik abzuspielen."); return; }
+    if(isPlaying){ bgm.pause(); isPlaying=false; musicBtn.textContent="Melodie 🎵"; vizOff(); }
+    else{ await tryPlay(); }
+  });
+
+  bgm?.addEventListener('pause', ()=>{ isPlaying=false; vizOff(); musicBtn.textContent="Melodie 🎵"; });
+  bgm?.addEventListener('ended', ()=>{ isPlaying=false; vizOff(); musicBtn.textContent="Melodie 🎵"; });
+  volumeEl?.addEventListener("input", ()=>{ bgm.volume = volumeEl.value / 100; });
+
+  // ===== Open → show card (state-safe) =====
+  openBtn.addEventListener("click", async (ev)=>{
+    if (!throttle("open", 400)) return;
+    if (appState !== STATE.CLOSED) return;
+
+    await withLock(async () => {
+      setState(STATE.OPENING);
+
+      // Ripple
+      const r = document.createElement('span');
+      r.className = 'ripple';
+      const rect = openBtn.getBoundingClientRect();
+      const x = (ev.clientX || (rect.left + rect.width/2)) - rect.left;
+      const y = (ev.clientY || (rect.top  + rect.height/2)) - rect.top;
+      r.style.left = x + 'px';
+      r.style.top  = y + 'px';
+      openBtn.appendChild(r);
+      setTimeout(()=> r.remove(), 650);
+
+      // Seal wiggle
+      if (sealEl){
+        sealEl.classList.add('wiggle');
+        setTimeout(()=> sealEl.classList.remove('wiggle'), 360);
+      }
+
+      // In the same gesture: audio + confetti
+      try{
+        if (fxOpen) { fxOpen.currentTime = 0; fxOpen.play().catch(()=>{}); }
+        if (bgm.paused){
+          const target = (volumeEl?.value||70) / 100;
+          bgm.volume = 0;
+          const p = bgm.play();
+          if (p && p.then) { await p; }
+          isPlaying = true; musicBtn.textContent = "Melodie 🎵"; vizOn();
+          let k = 0, steps = 16;
+          const it = setInterval(()=>{
+            k++;
+            bgm.volume = Math.min(target, (k/steps)*target);
+            if(k>=steps){ clearInterval(it); bgm.volume = target; }
+          }, 50);
+        }
+      }catch(e){}
+
+      burstConfetti(2600);
+
+      envEl.classList.add("opened");
+
+      // show card + start typing
+      await new Promise(res => setTimeout(res, 520));
+      card.classList.add("show");
+      typeWriter(letterText, letterEl);
+    });
+  });
+
+  // Seal wiggle on pointerdown
+  sealEl?.addEventListener('pointerdown', ()=>{
+    if (!throttle("seal", 180)) return;
+    sealEl.classList.add('wiggle');
+    setTimeout(()=> sealEl.classList.remove('wiggle'), 360);
+  });
+
+  // ===== Quotes + progress + swipe (state-safe) =====
+  const QUOTES = [
+
+  {text:`Das schönste Ereignis meines Tages ist immer der Moment, der mit dir zu tun hat. 💭❤️`, author:""},
+  {text:`An dem Tag, an dem du geboren wurdest, war es, als wäre einer meiner Träume Wirklichkeit geworden. 🎈🎊`, author:""},
+  {text:`Heute will mein Herz dir nur sagen: Du selbst bist für mich das beste Geschenk, das dieser Tag der Welt gegeben hat. 🎁🎂`, author:""},
+  {text:`Heute ist der Tag, an dem du auf die Welt gekommen bist, aber ich bin jeden Tag dankbar dafür, dass es dich gibt. 🎂🎉`, author:""},
+  {text:`Dieser Tag bedeutet für mich: ein Mädchen, das lacht  und mit jedem ihrer Lächeln verliebt sich mein Herz jedes Mal wieder neu. 🌟🤍`, author:""},
+  {text:`Der Tag deiner Geburt ist das wichtigste Datum im Kalender meines Herzens. 🎂🎉`, author:""},
+  {text:`Du bist nicht wie eine Kerze, die ausgeht; du bist wie ein Licht, das in meinem Herzen geblieben ist. 💭❤️`, author:""},
+  {text:`Heute ist dein Tag; der Tag des Mädchens, das mit einem einzigen Lächeln meinen ganzen Tag verändern kann. 🎈🎊`, author:""},
+  {text:`Wenn ich eine Person mitten im ganzen Chaos in meinem Kopf behalten soll, dann bist das du. 🫂❤️`, author:""},
+  {text:`Jedes Jahr, wenn dieser Tag kommt, erinnere ich mich daran, dass die Welt sich eines Tages dazu entschieden hat, dich mir zu schenken. 🎁🎂`, author:""},
+  {text:`Egal, wie weit ich von dir entfernt bin, du bist trotzdem auf eine besondere Art der Mensch, der meinem Herzen am nächsten ist. 🌫️💔`, author:""},
+  {text:`Du bist der Grund, warum ich verstehe, dass manche Menschen selbst ein Geschenk sind. 💞✨`, author:""},
+  {text:`Kein Foto auf der Welt ist für mich schöner als der Moment, in dem deine Augen mich ansehen. 👀✨`, author:""},
+  {text:`Ich liebe diesen Tag, nicht wegen seines Datums, sondern wegen dir, die diesem Tag überhaupt erst eine Bedeutung gegeben hat. 🎁🎂`, author:""},
+  {text:`Du bist nicht nur in meinem Leben, du bist mitten in meinem Herzen. ❤️🫶`, author:""},
+  {text:`Heute ist ein schöner Anlass, dir zu sagen: Deine Existenz ist wertvoller als jedes Geschenk. 🎂🎉`, author:""},
+  {text:`Die Entfernung ist nur auf der Landkarte groß, in meinem Herzen bist du immer hier. 🗺️❤️`, author:""},
+  {text:`Du bist wie ein Geheimnis, von dem mein Herz sich wünscht, dass es niemals zu Ende geht. 💞✨`, author:""},
+  {text:`Wenn ich eines Tages alles vergesse, bin ich mir sicher, dass deine Augen in meinem Kopf bleiben werden. 🌌👀`, author:""},
+  {text:`Jedes Jahr kommt dieser Tag wieder und sagt mir: Vergiss nicht, irgendwo auf dieser Welt gibt es eine „Roya(Traum)“, die für dich immer etwas ganz Besonderes ist. 🎂🎉`, author:""},
+  {text:`Dein Fehlen ist wie die Stille nach einem schönen Lied; es ist vorbei, aber es klingt immer noch in meinen Ohren nach. 🌙🫶`, author:""},
+  {text:`Überall dort, wo du dich selbst unterschätzt, bin ich da, um dich daran zu erinnern, wie unglaublich schön du bist. 🫂❤️`, author:""},
+  {text:`Jedes Mal, wenn ich „Blau“ sage, weiß ich selbst, dass ich von dir spreche. 🌟🤍`, author:""},
+  {text:`Schönheit bedeutet nicht nur, hübsch auszusehen; du bist schön, weil du mein Inneres schöner machst. 🌈✨`, author:""},
+  {text:`Du bist der Mensch, bei dem selbst dann, wenn du weit weg von mir bist, in meinem Herzen immer ein Platz für dich frei bleibt. 📍💭`, author:""},
+  {text:`Heute hatte der Kalender scheinbar nur eine wichtige Aufgabe: mich an deine Existenz zu erinnern. 🎈🎊`, author:""},
+  {text:`Manchmal will ich einfach nur still sein und dich in meiner Nähe haben; das reicht mir. 💭❤️`, author:""},
+  {text:`Du bist das Mädchen, an dessen Seite die Zeit vorbeigeht, aber dessen Erinnerung niemals alt wird. ❤️🫶`, author:""},
+  {text:`Je weiter du weg bist, desto näher kommen meine Gedanken zu dir. 🗺️❤️`, author:""},
+  {text:`Du merkst es selbst nicht, aber deine Anwesenheit macht alles um mich herum schöner. 💞✨`, author:""},
+  {text:`Wenn ich in deine Augen schaue, scheint die ganze Welt für mich still zu werden, und es bleiben nur du und mein Herz. 👁️💙`, author:""},
+  {text:`Du bist für mich der neue Maßstab dafür, was besonders ist. 🌟🤍`, author:""},
+  {text:`Ich liebe diesen Tag, weil er der Anfang von „dir“ ist. 🎈🎊`, author:""},
+  {text:`Du bist genau dieses Gefühl, das ich nicht erklären kann, sondern nur lieben kann. 🫂❤️`, author:""},
+  {text:`Sogar die Stille ist ein schönes Gespräch zwischen uns. 🤫💬`, author:""},
+  {text:`In all diesem ganzen Trubel reicht es, wenn ich mir einmal deine Augen vorstelle, damit mein Herz ruhig wird. 🌌👀`, author:""},
+  {text:`Du weißt gar nicht, wie schön es ist, dass es mir ohne jeden besonderen Grund allein durch den Gedanken an dich besser geht. 🌟🤍`, author:""},
+  {text:`Alles Gute zum Geburtstag, mein Blau in meinem Herzen; du bist genau die Farbe, die mir gefehlt hat. 🥳🎂`, author:""},
+  {text:`Selbst an meinen vollsten, chaotischsten Tagen ist irgendwo in meinem Kopf immer ein Teil mit dir beschäftigt. 💞✨`, author:""},
+  {text:`Von deinem Blick bis zu meinem Herzen gibt es einen direkten Weg, den niemand außer dir kennt. 👀✨`, author:""},
+  {text:`Dein Muttermal im Gesicht ist für mich schöner als jedes Make up; es ist natürlich, echt so wie du. 📍🌟`, author:""},
+  {text:`Heute ist der Tag, an dem Gott gesagt hat: „Lass mich dieser Welt noch ein bisschen zusätzliche Schönheit schenken“ und dieser Schönheit den Namen Roya gegeben hat. 🎂🎉`, author:""},
+  {text:`Du bist der Grund, warum alles um mich herum schöner aussieht. 💭❤️`, author:""},
+  {text:`Dein Blick ist eine Art Ruhe, die es nirgendwo sonst auf der Welt gibt. 🌌👀`, author:""},
+  {text:`Du bist wie der Satz, bei dem man nie möchte, dass am Ende ein Punkt steht. ❤️🫶`, author:""},
+  {text:`Heute ist der Tag, an dem die Welt dich gesehen hat, und ich danke Gott jeden einzelnen Tag dafür, dass es dich gibt. 🎈🎊`, author:""},
+  {text:`Je mehr Zeit vergeht, desto mehr merke ich, dass die Welt mir an dem Tag, an dem du geboren wurdest, einen Gefallen getan hat. 🎁🎂`, author:""},
+  {text:`Jedes Mal, wenn ich an dich denke, kommen zuerst deine Augen vor mein inneres Auge. 🌌👀`, author:""},
+  {text:`Dein Muttermal in deinem Gesicht ist die Unterschrift Gottes unter die Schönheit deines Gesichts. 💄🌿`, author:""},
+  {text:`Der schönste Teil meines Tages sind die paar Sekunden, in denen ich merke, dass eine Nachricht von dir gekommen ist. 📩✨`, author:""},
+  {text:`Wo immer dein Name fällt, wird für mich der Rest der Welt stummgeschaltet. 🔇💬`, author:""},
+  {text:`Es reicht, wenn du mich einen Moment ansiehst, und die Hälfte der Müdigkeit in meinem Herzen bleibt einfach dort zurück. 👁️💙`, author:""},
+  {text:`Deine Schönheit steckt nicht nur in deinem Gesicht; sie ist in deinem Verhalten, in deiner Art zu reden und sogar in deiner Art, beleidigt zu sein. 🫂❤️`, author:""},
+  {text:`Deine Schönheit ist nicht nur sichtbar, ich spüre sie jeden Tag in meinem eigenen Befinden. ✨🪞`, author:""},
+  {text:`Egal, wo ich bin, allein durch die Erinnerung an dein Lächeln wird dieser Ort ein bisschen schöner. 💞✨`, author:""},
+  {text:`Dein Lächeln ist nach deinen Augen das Schönste, was ich je in meinem Leben gesehen habe. 👀✨`, author:""},
+  {text:`Da ist etwas im Funkeln deiner Augen, bei dem ich mich jedes Mal, wenn ich es sehe, wieder neu in dich verliebe. 🌌👀`, author:""},
+  {text:`Ich finde, irgendwann musst du zugeben, dass du emotionalen Missbrauch an mir begehst; dieser ganze Einfluss auf mein Herz ist nicht normal. 💭❤️`, author:""},
+  {text:`Unter all meinen Wünschen ist „dich zu haben“ der wahrste von allen. 🌟🤍`, author:""},
+  {text:`Was auch immer dieser Tag sonst ist für mich ist er der Tag von „dir“, und das allein reicht, damit er der besonderste Tag des Jahres ist. 🎂🎉`, author:""},
+  {text:`Seit siebzehn Jahren atmest du, und mit jedem deiner Atemzüge machst du irgendwo auf dieser Welt einen Ort schöner besonders den Ort, an dem ich bin. 🔢💓`, author:""},
+  {text:`Du bist nicht nur zu dieser Welt hinzugekommen, du bist zu meinem Herzen hinzugekommen und das ist der Unterschied. 💞✨`, author:""},
+  {text:`Ich wünschte, du könntest sehen, wie schön du genau in dem Alter bist, in dem du jetzt bist nicht nur im Spiegel, sondern in meinem Herzen. 💭❤️`, author:""},
+  {text:`Alles Gute zum Geburtstag an das Mädchen, das selbst schöner ist als jeder Geburtstagswunsch. 🎁🎂`, author:""},
+  {text:`Dein Geburtstag ist für mich der Tag, an dem mein Leben einen noch schöneren Grund bekommen hat. 🎂🎉`, author:""},
+  {text:`Ich liebe diesen Tag, denn ohne diesen Tag gäbe es dich nicht und ohne dich gäbe es all diese schönen Gefühle in meinem Herzen nicht. 🎈🎊`, author:""},
+  {text:`Dieser Tag ist eine Erinnerung daran, dass es einen Menschen gibt, dessen Dasein das Atmen für mich schöner macht. 🎁🎂`, author:""},
+  {text:`Du bist nicht nur schön, du bist die Definition von Schönheit, die ich durch dich verstanden habe. ✨🪞`, author:""},
+  {text:`Heute ist der Tag, an dem ein schönes Herz zu dieser Welt dazugekommen ist; genau dieses Herz, das zum Blau meines Herzens geworden ist. 🎂🎉`, author:""},
+  {text:`Ich will dir nicht einfach nur gratulieren, ich will dich daran erinnern, dass deine Existenz selbst ein Fest für mein Herz ist. 🎈🎊`, author:""},
+  {text:`Heute ist der Tag, an dem du auf die Welt gekommen bist, aber ich bin jeden Tag dankbar dafür, dass es dich gibt. 🎁🎂`, author:""},
+  {text:`Wenn dich jemand nach deinem Alter fragt, sagst du „siebzehn“, aber wenn ich an dich denke, messe ich dich nicht in Zahlen, sondern am Zittern meines Herzens. 🔢💓`, author:""},
+  {text:`Wenn ich dein Muttermal im Gesicht sehe, habe ich das Gefühl, dass Gott an einer Stelle gesagt hat: „Hier, dieser Punkt gehört speziell dem Herzen dieses Jungen(Nur ich🤫).“ 💘`, author:""},
+  {text:`Dein Muttermal in deinem Gesicht ist nur ein Punkt, aber für mich ist es zum Mittelpunkt der Welt geworden. ✍️✨`, author:""},
+  {text:`Um ehrlich zu sein, ein Drittel meines Herzens gehört deinen Augen, ein Drittel deinem Lächeln und der Rest diesem kleinen Muttermal, das mich verrückt macht. 📍🌟`, author:""},
+  {text:`Dein Muttermal im Gesicht ist wie die Unterschrift Gottes auf deinem Gesicht; eine Art Bestätigung: „Diese Mädchen hier habe ich noch besonderer gemacht.“ ✍️✨`, author:""},
+  {text:`Dein Lächeln ist auch ohne dieses Muttermal schön, aber mit diesem Muttermal wird es zu meiner Lieblingsszene auf der ganzen Welt. 📍🌟`, author:""},
+  {text:`Sowohl dein Lächeln weiß, wie es mich umhaut, als auch dieses Muttermal nur mit dem Unterschied, dass dein Lächeln es laut tut und dein Muttermal still. 🤫💘`, author:""},
+
+];
+
+
+  let idx = 0, autoTimer = null;
+  const AUTOPLAY_INTERVAL = 6000;
+
+  function renderDots(){
+    dotsWrap.innerHTML = "";
+    QUOTES.forEach((q, i)=>{
+      const d = document.createElement("button");
+      d.className = "dot";
+      d.type = "button";
+      d.setAttribute("aria-label", `Zitat ${i+1} von ${QUOTES.length}`);
+      d.addEventListener("click", ()=> {
+        if (appState !== STATE.READY) return;
+        if (!throttle("dot", 180)) return;
+        showQuote(i); stopAuto();
+      });
+      dotsWrap.appendChild(d);
+    });
+  }
+
+  function restartProgress(){
+    if(!qProgress) return;
+    qProgress.style.setProperty('--qdur', AUTOPLAY_INTERVAL + 'ms');
+    qProgress.classList.remove('run'); void qProgress.offsetWidth; qProgress.classList.add('run');
+  }
+
+  function stopProgress(){
+    if(!qProgress) return;
+    qProgress.classList.remove('run');
+    const bar = qProgress.querySelector('.bar'); if(bar) bar.style.width='0%';
+  }
+
+  function showQuote(i){
+    idx = (i + QUOTES.length) % QUOTES.length;
+    quoteText.classList.remove("fade"); void quoteText.offsetWidth;
+    quoteText.textContent = "„" + QUOTES[idx].text + "“";
+    quoteText.classList.add("fade");
+    quoteAuthor.textContent = QUOTES[idx].author ? "— " + QUOTES[idx].author : "";
+    [...dotsWrap.children].forEach((d,k)=> d.classList.toggle("active", k===idx));
+    if(autoTimer) restartProgress();
+  }
+
+  function next(){ showQuote(idx+1); }
+  function prev(){ showQuote(idx-1); }
+
+  function randomQuote(){
+    let j = Math.floor(Math.random()*QUOTES.length);
+    if(j===idx) j = (j+1)%QUOTES.length;
+    showQuote(j);
+
+    const h = document.createElement('span');
+    h.className = 'pulse-heart';
+    h.textContent = '🎉';
+    quoteText.appendChild(h);
+    setTimeout(()=> h.remove(), 420);
+
+    burstConfetti(1200);
+  }
+
+  function startAuto(){
+    if(autoTimer) return;
+    autoTimer = setInterval(() => {
+      if (appState !== STATE.READY) return;
+      next();
+    }, AUTOPLAY_INTERVAL);
+    autoBtn.textContent = "Herzschlag: An 💞";
+    autoBtn.setAttribute("aria-pressed","true");
+    restartProgress();
+  }
+
+  function stopAuto(){
+    if(autoTimer){ clearInterval(autoTimer); autoTimer=null; }
+    autoBtn.textContent = "Herzschlag: Aus 🤍";
+    autoBtn.setAttribute("aria-pressed","false");
+    stopProgress();
+  }
+
+  prevBtn?.addEventListener("click", ()=>{ if(appState!==STATE.READY) return; if(!throttle("prev", 220)) return; prev(); stopAuto(); });
+  nextBtn?.addEventListener("click", ()=>{ if(appState!==STATE.READY) return; if(!throttle("next", 220)) return; next(); stopAuto(); });
+  randBtn?.addEventListener("click", ()=>{ if(appState!==STATE.READY) return; if(!throttle("rand", 260)) return; randomQuote(); stopAuto(); });
+  autoBtn?.addEventListener("click", ()=>{ if(appState!==STATE.READY) return; if(!throttle("auto", 280)) return; autoTimer ? stopAuto() : startAuto(); });
+
+  // Swipe (mobile)
+  let touchStartX=null, touchStartY=null, touchEndX=null, touchEndY=null;
+  const SWIPE_THRESHOLD = 40;
+
+  quotesSection?.addEventListener('touchstart', (e)=>{
+    const t = e.changedTouches[0]; touchStartX = t.clientX; touchStartY = t.clientY;
+  }, {passive:true});
+
+  quotesSection?.addEventListener('touchend', (e)=>{
+    if (appState !== STATE.READY) return;
+    const t = e.changedTouches[0]; touchEndX = t.clientX; touchEndY = t.clientY;
+    const dx = touchEndX - touchStartX; const dy = touchEndY - touchStartY;
+    if(Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > SWIPE_THRESHOLD){
+      if(dx < 0){ next(); } else { prev(); }
+      stopAuto();
+    }
+  }, {passive:true});
+
+  // ===== Replay (cancel-safe) =====
+  replayBtn?.addEventListener("click", async ()=>{
+    if (appState === STATE.OPENING || !card.classList.contains("show")) return;
+    if (!throttle("replay", 400)) return;
+
+    await withLock(async () => {
+      stopAuto();
+      typeWriter(letterText, letterEl);
+      burstConfetti(900);
+    });
+  });
+
+  // ===== Print: single A4 with automatic zoom =====
+  function mmToPx(mm){
+    const el=document.createElement('div');
+    el.style.height=mm+'mm';
+    el.style.position='absolute';
+    el.style.visibility='hidden';
+    document.body.appendChild(el);
+    const px=el.getBoundingClientRect().height;
+    el.remove();
+    return px;
+  }
+
+  function computePrintScale(){
+    try{
+      const TOP=16, RIGHT=14, BOTTOM=18, LEFT=18;
+      const PAGE_W=210, PAGE_H=297;
+
+      const printableWpx = mmToPx(PAGE_W - LEFT - RIGHT);
+      const printableHpx = mmToPx(PAGE_H - TOP - BOTTOM);
+
+      // Apply a measurement mode that mimics print hiding rules
+      document.documentElement.classList.add("print-measure");
+
+      const prevDisplay = getComputedStyle(card).display;
+      const prevWidth = card.style.width;
+
+      card.style.display = 'block';
+      card.style.width = printableWpx + 'px';
+
+      const contentH = card.scrollHeight;
+      const zoom = Math.min(1, printableHpx / contentH);
+
+      document.documentElement.style.setProperty('--print-zoom', zoom.toFixed(3));
+
+      card.style.width = prevWidth;
+      card.style.display = prevDisplay;
+
+      document.documentElement.classList.remove("print-measure");
+
+      return zoom;
+    }catch(e){
+      document.documentElement.classList.remove("print-measure");
+      document.documentElement.style.setProperty('--print-zoom','1');
+      return 1;
+    }
+  }
+
+  pdfBtn?.addEventListener("click", ()=>{
+    if (!throttle("print", 600)) return;
+    if (!card.classList.contains("show")) return;
+    computePrintScale();
+    setTimeout(()=> window.print(), 30);
+  });
+
+  window.addEventListener('beforeprint', computePrintScale);
+  window.addEventListener('afterprint', ()=>{
+    document.documentElement.style.removeProperty('--print-zoom');
+    document.documentElement.classList.remove("print-measure");
+  });
+
+  // ===== Init =====
+  renderDots();
+  showQuote(0);
+  setState(STATE.CLOSED);
+  syncUI();
+</script>
+</body>
+</html>
